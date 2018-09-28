@@ -36,4 +36,35 @@ for(auto const[a, b, c] : m)
 }
 ```
 
-Will not give const references to `a`, `b` and `c`.
+Will not give const references to `a`, `b` and `c`. Using structured bindings on a `const multi_container`, will still give const references though.
+
+Having said that, it's time to go over all other features. 
+
+# Member types
+
+| member type              | definition                                                                 |
+|--------------------------|----------------------------------------------------------------------------|
+| `iterator `              | `multi_iterator<typename detail::underlying_iterator<Ts>::type ...>`       |
+| `const_iterator`         | `multi_iterator<typename detail::underlying_const_iterator<Ts>::type ...>` |
+| `reverse_iterator `      | `std::reverse_iterator<iterator>`                                          |
+| `const_reverse_iterator` | `std::reverse_iterator<const_iterator> `                                   |
+| `value_type`             | `detail::tuple_wrapper<Ts...> `                                            |
+| `reference`              | `detail::tuple_wrapper<std::add_lvalue_reference_t<Ts> ...>`               |
+| `pointer`                | `std::add_pointer_t<value_type>`                                           |
+| `size_type`              | `std::size_t`                                                              |
+| `difference_type`        | `std::ptrdiff_t `                                                          |
+
+# Methods
+
+Very simply said, `multi_container` supports nearly all operations `std::vector` supports, except a few. Also, if any of the containers is for example an `std::array`, calling `push_back` on the `multi_container` will trigger a compiler error. Below is a list of all operations allowed on `multi_container`, assuming the containers it holds support those operations too.
+
+- iterators
+  - `iterator begin()` returns an iterator to the beginning of the sequence
+  - `iterator end()` returns an iterator to the element past the end of the sequence
+  - `const_iterator begin() const` is a `const` version of `begin()`
+  - `const_iterator end() const` is a `const` version of `end()`
+  - `const_iterator cbegin() const` returns a constant iterator to the beginning of the sequence
+  - `const_iterator cend() const` returns a constant iterator to the element past the end of the sequence
+  - `reverse_iterator rbegin()` returns a reverse iterator to the beginning of the sequence
+  - `reverse_iterator rend()` returns a reverse iterator to the element past the end of the sequence
+  
