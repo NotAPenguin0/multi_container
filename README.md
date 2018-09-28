@@ -58,7 +58,7 @@ Having said that, it's time to go over all other features.
 
 Very simply said, `multi_container` supports nearly all operations `std::vector` supports, except a few. Also, if any of the containers is for example an `std::array`, calling `push_back` on the `multi_container` will trigger a compiler error. Below is a list of all operations allowed on `multi_container`, assuming the containers it holds support those operations too.
 
-- iterators
+- ***Iterators***
   - `iterator begin()` returns an iterator to the beginning of the sequence
   - `iterator end()` returns an iterator to the element past the end of the sequence
   - `const_iterator begin() const` is a `const` version of `begin()`
@@ -67,4 +67,31 @@ Very simply said, `multi_container` supports nearly all operations `std::vector`
   - `const_iterator cend() const` returns a constant iterator to the element past the end of the sequence
   - `reverse_iterator rbegin()` returns a reverse iterator to the beginning of the sequence
   - `reverse_iterator rend()` returns a reverse iterator to the element past the end of the sequence
-  
+  - `const_reverse_iterator crbegin() const` returns a const reverse iterator to the beginning of the sequence
+  - `const_reverse_iterator crend() const` returns a const reverse iterator to the element past the end of the sequence
+- ***Access to underlying containers***
+  - `std::tuple<Ts...>& data()` access the underlying tuple storing the containers
+  - `std::tuple<Ts...> const& data() const` access the underlying tuple storing the containers
+  - `template<class C> C& get_container()` returns the container with specified type
+  - `template<class C> C const& get_container() const` returns the container with specified type
+  - `templace<size_t I> tuple_element_t<I, tuple<Ts...>>& get_container()` returns the container at specified index
+  - `templace<size_t I> tuple_element_t<I, tuple<Ts...>> const& get_container() const` returns the container at specified index
+- ***Element access***
+  - `detail::tuple_wrapper<Ts& ...> operator[](std::size_t index)` returns a tuple containing references to the elements of all containers at the specified index. Does not perform bounds checking.
+  - `detail::tuple_wrapper<Ts const& ...> operator[](std::size_t index) const` returns a tuple containing references to the elements of all containers at the specified index. Does not perform bounds checking.
+  - `detail::tuple_wrapper<Ts& ...> at(std::size_t index)` returns a tuple containing references to the elements of all containers at the specified index. Throws an instance of `std::out_of_range` when `index >= size()`.
+  - `detail::tuple_wrapper<Ts const& ...> at(std::size_t index) const` returns a tuple containing const references to the elements of all containers at the specified index. Throws an instance of `std::out_of_range` when `index >= size()`.
+  - `detail::tuple_wrapper<Ts& ...> front()` returns a tuple containing references to the first element of every container. Same as calling `*(m.begin())`.
+  - `detail::tuple_wrapper<Ts const& ...> front() const` returns a tuple containing const references to the first element of every container. Same as calling `*(m.begin())`.
+  - `detail::tuple_wrapper<Ts& ...> back()` returns a tuple containing references to the last element of every container. Same as calling `*(m.end() - 1)`.
+  - `detail::tuple_wrapper<Ts const& ...> back() const` returns a tuple containing references to the last element of every container. Same as calling `*(m.end() - 1)`.
+- ***Capacity***
+  - `bool empty() const` returns `true` if all containers stored are empty
+  - `size_type size() const` returns the size of the ***smallest container***.
+
+***TODO: Modification***
+
+
+
+
+
