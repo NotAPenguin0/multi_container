@@ -88,15 +88,21 @@ Very simply said, `multi_container` supports nearly all operations `std::vector`
 - ***Capacity***
   - `bool empty() const` returns `true` if all containers stored are empty
   - `size_type size() const` returns the size of the ***smallest container***.
-
-***TODO: Modification***
 - ***Modifiers***
   - `void clear()` clears all stored containers
   - `template<class... Elems> void push_back(std::tuple<Elems...> const& elems)` Appends elements at the end of every container
   - `template<class... Elems> iterator insert(iterator pos, std::tuple<Elems...> const& elems` Inserts elements before `pos`
   - `template<class... Elems> iterator insert(const_iterator pos, std::tuple<Elems...> const& elems)` Inserts elements before `pos`
-  - `template<typename InputIt> iterator insert(iterator pos, InputIt first, InputIt last)` Inserts elements in the range `[first, last[`. `InputIt` must be a `multi_iterator` matching this `multi_container`. The behavior is undefined when `[first, last[` is not a valid range.
-  
+  - `template<class InputIt> iterator insert(iterator pos, InputIt first, InputIt last)` Inserts elements in the range `[first, last[`. `InputIt` must be a `multi_iterator` matching this `multi_container`. The behavior is undefined when `[first, last[` is not a valid range.
+  - `template<class... Elems> iterator insert(iterator pos, size_type count, std::tuple<Elems...> const& elems)` Inserts `count` copies of `elems` before `pos`
+  - `iterator erase(iterator pos)` Erases element at `pos`.
+  - `iterator erase(const_iterator pos` Erases element at `pos`.
+  - `iterator erase(iterator first, iterator last)` Erases elements in the range `[first, last[`. The behavior in undefined when `[first, last[` is not a valid range.
+  - `iterator erase(const_iterator first, const_iterator last)` Erases elements in the range `[first, last[`. The behavior in undefined when `[first, last[` is not a valid range.
+  - `void pop_back()` removes the last element from the container
+
+
+
 
 
 
