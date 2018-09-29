@@ -18,7 +18,7 @@ Now, we declare our `multi_container`. Luckily we have type deduction from the c
 mvg::multi_container m(vi, vf, all);
 ```
 
-I will start off immediately by showing off what I think is the best feature: *support for structured bindings.*
+***Structured bindings***
 
 ```cpp
 for(auto[a, b, c] : m)
@@ -38,7 +38,42 @@ for(auto const[a, b, c] : m)
 
 Will not give const references to `a`, `b` and `c`. Using structured bindings on a `const multi_container`, will still give const references though.
 
-Having said that, it's time to go over all other features. 
+***STL Algorithms***
+
+`multi_container` is fully compatible with most/all STL algorithms. For example:
+```cpp
+
+mvg::multi_container m(vi, vf, all); //See the containers above
+
+auto it = std::find(m.begin(), m.end(), std::make_tuple(1, 2.0f, 5ll));
+if (it == m.end())
+{
+    std::cout << "Element not found";
+}
+
+m.erase(std::remove_if(
+            m.begin(),
+            m.end(),
+            [](auto elem)
+            {
+                return std::get<0>(elem) <= 3;
+            }),
+        m.end());
+```
+
+These are just 2 examples of standard algorithms that works smoothly with `multi_container`. There is one special case, and that is when you start using an algorithm that compares elements, like `std::sort`. As there is no good way of ordering when comparing with `operator<`, `operator>`, or any other relational comparison, `multi_container` uses the result of the comparison of the first 2 elements. This has an interesting side effect, that when sorting a `multi_container`, the first container will be sorted, and all others will be sorted ***in the order of the first one***. Example:
+
+```cpp
+mvg::multi_container m(vi, vf, all);
+std::sort(m.begin(), m.end());
+```
+Since `vi`, the first container, looks like this: `{ 0, 1, -1, 2, -2 }`, It will be sorted to: `{-2, -1, 0, 1, 2}`. Containers `vf` and `all` will be sorted in the same order. A way to visualize this is that `vi` specifies the indices of the elements in the sorted vector.
+`
+
+
+***Other features***
+
+Below you can find a complete list of all member types and methods.
 
 # Member types
 
