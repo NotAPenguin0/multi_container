@@ -51,14 +51,11 @@ if (it == m.end())
     std::cout << "Element not found";
 }
 
-m.erase(std::remove_if(
-            m.begin(),
-            m.end(),
+m.erase(std::remove_if(m.begin(), m.end(),
             [](auto elem)
             {
                 return std::get<0>(elem) <= 3;
-            }),
-        m.end());
+            }), m.end());
 ```
 
 These are just 2 examples of standard algorithms that works smoothly with `multi_container`. There is one special case, and that is when you start using an algorithm that compares elements, like `std::sort`. As there is no good way of ordering when comparing with `operator<`, `operator>`, or any other relational comparison, `multi_container` uses the result of the comparison of the first 2 elements. This has an interesting side effect, that when sorting a `multi_container`, the first container will be sorted, and all others will be sorted ***in the order of the first one***. Example:
