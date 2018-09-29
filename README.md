@@ -90,8 +90,13 @@ Very simply said, `multi_container` supports nearly all operations `std::vector`
   - `size_type size() const` returns the size of the ***smallest container***.
 
 ***TODO: Modification***
-
-
+- ***Modifiers***
+  - `void clear()` clears all stored containers
+  - `template<class... Elems> void push_back(std::tuple<Elems...> const& elems)` Appends elements at the end of every container
+  - `template<class... Elems> iterator insert(iterator pos, std::tuple<Elems...> const& elems` Inserts elements before `pos`
+  - `template<class... Elems> iterator insert(const_iterator pos, std::tuple<Elems...> const& elems)` Inserts elements before `pos`
+  - `template<typename InputIt> iterator insert(iterator pos, InputIt first, InputIt last)` Inserts elements in the range `[first, last[`. `InputIt` must be a `multi_iterator` matching this `multi_container`. The behavior is undefined when `[first, last[` is not a valid range.
+  
 
 
 
