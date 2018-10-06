@@ -193,6 +193,9 @@ public:
 		m_containers(containers)
 	{
 	}
+	
+	multi_container(multi_container const&) = default;
+	multi_container(multi_container&&) = default;
 
 	multi_container& operator=(multi_container const& rhs)
 	{
